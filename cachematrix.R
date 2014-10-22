@@ -1,12 +1,16 @@
 ## The functions in this file work in tandem to calculate
 ## the inverse of a matrix and cache the results.
-## For this to work, a square invertible matrix must be
-## passed to the makeCacheMatrix function to construct
-## a list of functions which can get and set the value
-## of that matrix, and get and set the inverse of that
-## matrix. The cacheSolve function can then use the
-## special matrix to calculate the inverse of that
-## matrix and cache the results.
+##
+## To start, a square invertible matrix must be
+## passed to the makeCacheMatrix function. This 
+## function returns a list of functions (essentially 
+## emulating a special matrix class) to get and 
+## set the value of the passed matrix, and get
+## and set the inverse of that matrix. 
+## 
+## The cacheSolve function can then use this
+## special matrix to calculate the inverse of 
+## that matrix and cache the results.
 
 ## Constructor function that returns a set of functions
 ## to get and set the value of a matrix, and get and set
@@ -16,7 +20,7 @@ makeCacheMatrix <- function(x = matrix()) {
         i <- NULL
 
         ## Create a function to update the value of
-        ## the matrix and reset it's inverse.
+        ## the matrix and reset it's inverse to NULL.
         set <- function(y) {
                 x <<- y
                 i <<- NULL
@@ -34,7 +38,7 @@ makeCacheMatrix <- function(x = matrix()) {
         get_inverse <- function() i
 
         ## Finally, return the functions that were created
-        ## as a named list.
+        ## in a named list.
         list(set = set, get = get,
              set_inverse = set_inverse,
              get_inverse = get_inverse)
@@ -46,7 +50,8 @@ makeCacheMatrix <- function(x = matrix()) {
 ## will calculate the inverse of the matrix once, then
 ## caches the results. Subsequent calls to calculate the
 ## inverse return the cached value, unless the value of
-## the matrix is updated. The inverse will then be
+## the matrix is updated through the set function of the
+## makeCacheMatrix return type. The inverse will then be
 ## recalculated and recached.
 cacheSolve <- function(x, ...) {
         ## Get the inverse of the matrix x.
@@ -54,10 +59,10 @@ cacheSolve <- function(x, ...) {
 
         ## If the value of the inverse is not NULL ...
         if(!is.null(i)) {
-                ## Then the inverse has already been calculated.
+                ## ... then the inverse has already been calculated.
                 message("Getting cached data...")
 
-                ## So, return the cached valued and exit the function.
+                ## Return the cached valued and exit the function.
                 return(i)
         }
 
